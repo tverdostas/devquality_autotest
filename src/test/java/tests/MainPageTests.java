@@ -1,9 +1,6 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 import enums.MiddleMenu;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,10 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import pages.MainPage;
-
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.$x;
 
 public class MainPageTests {
     @BeforeAll
@@ -33,47 +26,67 @@ public class MainPageTests {
     @Test
     void startPageIsPersonalClientsTest() {
         mainPage.
-                openPage()
-                .getMainHeaderButton()
-                .checkMainHeaderButton();
+                openPage().
+                getMainHeaderButton().
+                checkMainHeaderButton();
     }
 
-    @ParameterizedTest
+/*    @ParameterizedTest
     @EnumSource(MiddleMenu.class)
     void allButtonsInMiddleMenuIsVisibleTest(MiddleMenu middleMenu) {
         open("https://tatarstan.mts.ru/personal");
-        ElementsCollection selenideElements = $$x("//div[@class='navigation-menu-slider__container']/descendant::h3[text()='" + middleMenu.getDisplayName() + "' and @class='navigation-menu-card__title']").shouldBe(visible);
+
+        ElementsCollection elements = $$x("//div[@class='navigation-menu-slider__container']/descendant::h3[text()='" + middleMenu.getDisplayName() + "' and @class='navigation-menu-card__title']");
+        elements.filter(visible);
+    }*/
+
+    @ParameterizedTest
+    @EnumSource(MiddleMenu.class)
+    void allButtonsInMiddleMenuIsVisibleWithAssertionTest(MiddleMenu middleMenu) {
+        mainPage.
+                openPage().
+                verifyMenuItemIsVisible(middleMenu.getDisplayName());
     }
+
     @Test
     void modalWindowPersonalAccountHaveCorrectHeaderTest(){
-        open("https://tatarstan.mts.ru/personal");
-        $x("//span[@class='mm-web-button__label' and text()='Войти']").click();
-        $x("//h2[@class='mts-universal-modal__title']").shouldHave(text("Личные кабинеты"));
+        mainPage.
+                openPage().
+        clickSignInButton().
+        mainHeaderIsVisible();
     }
-    @Test
+/*    @Test
     void modalWindowReplenishmentOfBalanceHaveCorrectHeaderTest(){
         open("https://tatarstan.mts.ru/personal");
         $x("//span[contains(@class,'mm-web-button__label') and text()='Пополнить']").click();
-  }
+        $x("//h2[text()='Личные кабинеты']");
+  }*/
 
     @Test
     void fieldWithPhoneNumberInBalanceHaveCorrectPlaceholderTest(){
-        open("https://tatarstan.mts.ru/personal");
-        $x("//input[@name='phone']").shouldHave(attribute("placeholder", "XXX XXX-XX-XX"));
+        mainPage.
+                openPage().
+                phoneNumberInReplenishmentOfBalanceHaveCorrectPlaceholder();
     }
 
     @Test
     void fieldWithPhoneNumberMoveToMtsHaveCorrectPlaceholderTest(){
-        open("https://tatarstan.mts.ru/personal");
-        $x("//input[@formcontrolname='phone']").shouldHave(attribute("placeholder", "XXX XXX-XX-XX"));
+        mainPage.
+                openPage().
+                phoneNumberInMoveToMtsBlockHaveCorrectPlaceholder();
     }
 
     @Test
-    void errorTextIsCorrectForEmptyMoveToMtsTest(){
-        SelenideElement submitButton = $x("//span[text()='Перейти в МТС']/ancestor::button[@type='submit']");
+    void submitButtonIsDisabledForEmptyMoveToMtsTest(){
+/*        SelenideElement submitButton = $x("//span[text()='Перейти в МТС']/ancestor::button[@type='submit']");
 
         open("https://tatarstan.mts.ru/personal");
         submitButton.click();
-        submitButton.shouldHave(attribute("disabled", ""));
+        submitButton.shouldHave(attribute("disabled", ""));*/
+
+        mainPage.
+                openPage().
+                submitButtonMoveToMtsClick().
+                submitButtonMoveToMtsCheckIsDisabled();
     }
 }
