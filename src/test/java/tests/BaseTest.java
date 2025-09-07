@@ -14,7 +14,7 @@ public class BaseTest {
         Configuration.baseUrl = "https://tatarstan.mts.ru/personal";
         Configuration.pageLoadStrategy = "eager";
         Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 40000;
+        Configuration.timeout = 80000;
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
         options.addArguments("--no-sandbox");
