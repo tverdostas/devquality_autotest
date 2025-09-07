@@ -12,7 +12,7 @@ public class BaseTest {
     @BeforeAll
     static void browserConfigurations(){
         Configuration.baseUrl = "https://tatarstan.mts.ru/personal";
-        Configuration.pageLoadStrategy = "eager";
+        Configuration.pageLoadStrategy = "normal";
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 80000;
         ChromeOptions options = new ChromeOptions();
