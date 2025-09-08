@@ -2,10 +2,13 @@ package tests;
 
 import enums.MiddleMenu;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import pages.MainPage;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class MainPageTests extends BaseTest {
 
     MainPage mainPage = new MainPage();
